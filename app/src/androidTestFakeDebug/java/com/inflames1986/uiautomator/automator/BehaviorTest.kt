@@ -10,6 +10,7 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
+import com.inflames1986.uiautomator.TestConstants
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -43,7 +44,10 @@ class BehaviorTest {
         context.startActivity(intent)
 
         //Ждем, когда приложение откроется на смартфоне чтобы начать тестировать его элементы
-        uiDevice.wait(Until.hasObject(By.pkg(packageName).depth(0)), TIMEOUT)
+        uiDevice.wait(
+            Until.hasObject(By.pkg(packageName).depth(TestConstants.EXACT_DEPT)),
+            TestConstants.TIMEOUT
+        )
     }
 
     //Убеждаемся, что приложение открыто. Для этого достаточно найти на экране любой элемент
@@ -51,7 +55,7 @@ class BehaviorTest {
     @Test
     fun test_MainActivityIsStarted() {
         //Через uiDevice находим editText
-        val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
+        val editText = uiDevice.findObject(By.res(packageName, TestConstants.SEARCH_EDIT_TEXT_ID))
         //Проверяем на null
         Assert.assertNotNull(editText)
     }
@@ -59,15 +63,15 @@ class BehaviorTest {
     //Убеждаемся, что поиск работает как ожидается
     @Test
     fun test_SearchIsPositive() {
-        val editText = uiDevice.findObject(By.res(packageName, "searchEditText"))
-        editText.text = "UiAutomator"
-        uiDevice.findObject(By.res(packageName, FIND_BUTTON)).click()
+        val editText = uiDevice.findObject(By.res(packageName, TestConstants.SEARCH_EDIT_TEXT_ID))
+        editText.text = TestConstants.QUERY_SECOND
+        uiDevice.findObject(By.res(packageName, TestConstants.FIND_BUTTON)).click()
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, TOTAL_COUNT)),
-                TIMEOUT
+                Until.findObject(By.res(packageName, TestConstants.TOTAL_COUNT)),
+                TestConstants.TIMEOUT
             )
-        Assert.assertEquals(changedText.text.toString(), FIND_RESULT_STRING)
+        Assert.assertEquals(changedText.text.toString(), TestConstants.FIND_RESULT_STRING)
     }
 
     //Убеждаемся, что DetailsScreen открывается
@@ -77,7 +81,7 @@ class BehaviorTest {
         val toDetails: UiObject2 = uiDevice.findObject(
             By.res(
                 packageName,
-                "toDetailsActivityButton"
+                TestConstants.TO_DETAILS_BUTTON_ID
             )
         )
         //Кликаем по ней
@@ -87,8 +91,8 @@ class BehaviorTest {
         //Это будет означать, что DetailsScreen открылся и это поле видно на экране.
         val changedText =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, "totalCountTextView")),
-                TIMEOUT
+                Until.findObject(By.res(packageName, TestConstants.TOTAL_COUNT)),
+                TestConstants.TIMEOUT
             )
         //Убеждаемся, что поле видно и содержит предполагаемый текст.
         //Обратите внимание, что текст должен быть "Number of results: 0",
@@ -103,27 +107,28 @@ class BehaviorTest {
     @Test
     fun test_OpenDetailsScreenAndCheckResult() {
         //Находим searchEditText и ставим ему текст AppDelivery
-        uiDevice.findObject(By.res(packageName, SEARCH_EDIT_TEXT_ID)).text = QUERY
+        uiDevice.findObject(By.res(packageName, TestConstants.SEARCH_EDIT_TEXT_ID)).text =
+            TestConstants.QUERY
         //Находим кнопку FIND (find_button) и вызываем клик
-        uiDevice.findObject(By.res(packageName, FIND_BUTTON)).click()
+        uiDevice.findObject(By.res(packageName, TestConstants.FIND_BUTTON)).click()
         //Находим totalCountTextView и в resultValue заносим его текстовое значение
         val resultValue =
             uiDevice.wait(
-                Until.findObject(By.res(packageName, TOTAL_COUNT)),
-                TIMEOUT
+                Until.findObject(By.res(packageName, TestConstants.TOTAL_COUNT)),
+                TestConstants.TIMEOUT
             ).text.toString()
         //Находим кнопку TO DETAILS (toDetailsActivityButton) и вызываем клик
         uiDevice.findObject(
             By.res(
                 packageName,
-                TO_DETAILS_BUTTON_ID
+                TestConstants.TO_DETAILS_BUTTON_ID
             )
         ).click()
         //На экране детализации также находим totalCountTextView и заносим его текстовое значение
         //в detailValue.
         val detailValue = uiDevice.wait(
-            Until.findObject(By.res(packageName, TOTAL_COUNT)),
-            TIMEOUT
+            Until.findObject(By.res(packageName, TestConstants.TOTAL_COUNT)),
+            TestConstants.TIMEOUT
         ).text.toString()
         //Сравниваем значение, которое получилось в результате поиска на MainActivity со значением
         //которое выводится в DetailsActivity
@@ -133,17 +138,17 @@ class BehaviorTest {
     //Убеждаемся, что при поиске появляется ProgressBar, если запрос не пустой
     @Test
     fun test_ShowProgressWhenSearch() {
-        val editText = uiDevice.findObject(By.res(packageName, SEARCH_EDIT_TEXT_ID))
-        editText.text = "UiAutomator"
-        uiDevice.findObject(By.res(packageName, FIND_BUTTON)).click()
+        val editText = uiDevice.findObject(By.res(packageName, TestConstants.SEARCH_EDIT_TEXT_ID))
+        editText.text = TestConstants.QUERY_SECOND
+        uiDevice.findObject(By.res(packageName, TestConstants.FIND_BUTTON)).click()
         val progress = uiDevice.wait(
             Until.findObject(
                 By.res(
                     packageName,
-                    PROGRESS_BAR_ID
+                    TestConstants.PROGRESS_BAR_ID
                 )
             ),
-            TIMEOUT
+            TestConstants.TIMEOUT
         )
         Assert.assertNotNull(progress)
     }
@@ -151,17 +156,17 @@ class BehaviorTest {
     //Убеждаемся, что при поиске не появляется ProgressBar, если запрос пустой
     @Test
     fun test_NotShowProgressWhenSearchWithEmptyQuery() {
-        val editText = uiDevice.findObject(By.res(packageName, SEARCH_EDIT_TEXT_ID))
+        val editText = uiDevice.findObject(By.res(packageName, TestConstants.SEARCH_EDIT_TEXT_ID))
         editText.text = ""
-        uiDevice.findObject(By.res(packageName, FIND_BUTTON)).click()
+        uiDevice.findObject(By.res(packageName, TestConstants.FIND_BUTTON)).click()
         val progress = uiDevice.wait(
             Until.findObject(
                 By.res(
                     packageName,
-                    PROGRESS_BAR_ID
+                    TestConstants.PROGRESS_BAR_ID
                 )
             ),
-            TIMEOUT
+            TestConstants.TIMEOUT
         )
         Assert.assertNull(progress)
     }
@@ -169,58 +174,58 @@ class BehaviorTest {
     //Убеждаемся, что при клике по инкременту на экране детализации отобразится "Number of results: 1"
     @Test
     fun test_ClickToIncrementAndCheckValue() {
-        uiDevice.findObject(By.res(packageName, TO_DETAILS_BUTTON_ID)).click()
+        uiDevice.findObject(By.res(packageName, TestConstants.TO_DETAILS_BUTTON_ID)).click()
         uiDevice.wait(
             Until.findObject(
                 By.res(
                     packageName,
-                    INCREMENT_BUTTON_ID
+                    TestConstants.INCREMENT_BUTTON_ID
                 )
             ),
-            TIMEOUT
+            TestConstants.TIMEOUT
         )?.click()
         val detailValue =
             uiDevice.findObject(
-                By.res(packageName, TOTAL_COUNT)
+                By.res(packageName, TestConstants.TOTAL_COUNT)
             ).text.toString()
-        Assert.assertEquals(detailValue, FIND_RESULT_INCREMENT)
+        Assert.assertEquals(detailValue, TestConstants.FIND_RESULT_INCREMENT)
     }
 
     //Убеждаемся, что при клике по инкременту на экране детализации отобразится "Number of results: -1"
     @Test
     fun test_ClickToDecrimentAndCheckValue() {
-        uiDevice.findObject(By.res(packageName, TO_DETAILS_BUTTON_ID)).click()
+        uiDevice.findObject(By.res(packageName, TestConstants.TO_DETAILS_BUTTON_ID)).click()
         uiDevice.wait(
             Until.findObject(
                 By.res(
                     packageName,
-                    DECREMENT_BUTTON_ID
+                    TestConstants.DECREMENT_BUTTON_ID
                 )
             ),
-            TIMEOUT
+            TestConstants.TIMEOUT
         )?.click()
 
         val detailValue =
             uiDevice.findObject(
-                By.res(packageName, TOTAL_COUNT)
+                By.res(packageName, TestConstants.TOTAL_COUNT)
             ).text.toString()
-        Assert.assertEquals(detailValue, FIND_RESULT_DECREMENT)
+        Assert.assertEquals(detailValue, TestConstants.FIND_RESULT_DECREMENT)
     }
 
     //Убеждаемся, что при клике на BACK откроется MainActivity, если мы находимся на DetailActivity
     @Test
     fun test_ClickBackFromDetailActivity() {
         //Перейдем на экран детализации
-        uiDevice.findObject(By.res(packageName, TO_DETAILS_BUTTON_ID)).click()
+        uiDevice.findObject(By.res(packageName, TestConstants.TO_DETAILS_BUTTON_ID)).click()
         //Убедимся, что экран открыт. Для этого проверим наличие нокпи декремента, например.
         uiDevice.wait(
             Until.findObject(
                 By.res(
                     packageName,
-                    DECREMENT_BUTTON_ID
+                    TestConstants.DECREMENT_BUTTON_ID
                 )
             ),
-            TIMEOUT
+            TestConstants.TIMEOUT
         )
         //Жмакаем кнопку Back
         uiDevice.pressBack()
@@ -229,10 +234,10 @@ class BehaviorTest {
             Until.findObject(
                 By.res(
                     packageName,
-                    FIND_BUTTON
+                    TestConstants.FIND_BUTTON
                 )
             ),
-            TIMEOUT
+            TestConstants.TIMEOUT
         )
         Assert.assertNotNull(findButton)
     }
@@ -246,26 +251,11 @@ class BehaviorTest {
             Until.findObject(
                 By.res(
                     packageName,
-                    FIND_BUTTON
+                    TestConstants.FIND_BUTTON
                 )
             ),
-            TIMEOUT
+            TestConstants.TIMEOUT
         )
         Assert.assertNull(findButton)
-    }
-
-    companion object {
-        private const val TIMEOUT = 10000L
-        private const val FIND_BUTTON = "find_button"
-        private const val TOTAL_COUNT = "totalCountTextView"
-        private const val FIND_RESULT_STRING = "Number of results: 688"
-        private const val QUERY = "AppDelivery"
-        private const val SEARCH_EDIT_TEXT_ID = "searchEditText"
-        private const val TO_DETAILS_BUTTON_ID = "toDetailsActivityButton"
-        private const val FIND_RESULT_INCREMENT = "Number of results: 1"
-        private const val FIND_RESULT_DECREMENT = "Number of results: -1"
-        private const val INCREMENT_BUTTON_ID = "incrementButton"
-        private const val DECREMENT_BUTTON_ID = "decrementButton"
-        private const val PROGRESS_BAR_ID = "progressBar"
     }
 }
