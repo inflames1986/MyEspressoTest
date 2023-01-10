@@ -1,4 +1,4 @@
-package com.inflames1986.uiautomator.automator
+package softing.ubah4ukdev.uiautomator.automator
 
 import android.content.Context
 import android.content.Intent
