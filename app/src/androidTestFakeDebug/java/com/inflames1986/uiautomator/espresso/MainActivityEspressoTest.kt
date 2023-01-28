@@ -9,6 +9,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.inflames1986.myespressotest.BuildConfig
 import com.inflames1986.myespressotest.view.search.MainActivity
+import com.inflames1986.uiautomator.TestConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
