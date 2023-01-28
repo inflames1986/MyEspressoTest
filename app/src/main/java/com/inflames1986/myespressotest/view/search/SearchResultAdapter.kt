@@ -3,11 +3,11 @@ package com.inflames1986.myespressotest.view.search
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.inflames1986.myespressotest.R
-import com.inflames1986.myespressotest.model.SearchResult
 import kotlinx.android.synthetic.main.list_item.view.*
-
+import com.inflames1986.myespressotest.model.SearchResult
 
 internal class SearchResultAdapter :
     RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder>() {
@@ -43,6 +43,9 @@ internal class SearchResultAdapter :
 
         fun bind(searchResult: SearchResult) {
             itemView.repositoryName.text = searchResult.fullName
+            itemView.repositoryName.setOnClickListener {
+                Toast.makeText(itemView.context, searchResult.fullName, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
