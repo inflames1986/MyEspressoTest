@@ -4,10 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_details.*
+import com.inflames1986.myespressotest.R
 import com.inflames1986.myespressotest.presenter.details.DetailsPresenter
 import com.inflames1986.myespressotest.presenter.details.PresenterDetailsContract
-import com.inflames1986.myespressotest.R
+import kotlinx.android.synthetic.main.activity_details.*
 import java.util.*
 
 class DetailsActivity : AppCompatActivity(), ViewDetailsContract {

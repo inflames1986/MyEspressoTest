@@ -7,15 +7,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.inflames1986.myespressotest.R
-import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import com.inflames1986.myespressotest.model.SearchResult
 import com.inflames1986.myespressotest.presenter.RepositoryContract
 import com.inflames1986.myespressotest.presenter.search.PresenterSearchContract
 import com.inflames1986.myespressotest.presenter.search.SearchPresenter
 import com.inflames1986.myespressotest.repository.FakeGitHubRepository
 import com.inflames1986.myespressotest.view.details.DetailsActivity
+import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class MainActivity : AppCompatActivity(), ViewSearchContract {
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity(), ViewSearchContract {
     }
 
     private fun createRepository(): RepositoryContract =
-            FakeGitHubRepository()
+        FakeGitHubRepository()
 
     private fun createRetrofit(): Retrofit {
         return Retrofit.Builder()
